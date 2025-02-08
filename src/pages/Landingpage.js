@@ -18,8 +18,8 @@ const LandingPage = () => {
 
             {/* Navigation bar at top of screen */}
             <Navbar/>
-            
-            {/*Signin form*/}
+
+            {/*Sign in form*/}
             <Signinform/>
 
         </div>
