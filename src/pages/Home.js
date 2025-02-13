@@ -18,7 +18,7 @@ const Home = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512"><path d="M64 360c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zm0-160c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zM120 96c0 30.9-25.1 56-56 56S8 126.9 8 96S33.1 40 64 40s56 25.1 56 56z"/></svg>
                 </div>
             </div>
-            
+
             <div className=" py-5 shadow-sm">
                 <ChatSearch/>
             </div>
@@ -26,7 +26,7 @@ const Home = () => {
 
         {/* ------- body --------- */}
 
-            <div className=" fixed pt-2 w-full h-dvh overflow-x-scroll ">
+            <div className=" fixed pt-2 w-full h-5/6 overflow-x-scroll">
                 <Chat/>
                 <Chat/>
                 <Chat/>
@@ -36,7 +36,7 @@ const Home = () => {
                 <Chat/>
                 <Chat/>
                 <Chat/>
-                <p className="h-40 text-slate-50/10"> - </p>
+                <Chat/>
             </div>
 
         </div>
