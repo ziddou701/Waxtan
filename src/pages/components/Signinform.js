@@ -1,20 +1,43 @@
+import React, { useRef } from "react";
+import {firestore} from "../../Firebase";
+import {addDoc , collection} from "@firebase/firestore";
+
 const Signinform = () => {
+
+    const emailRef = useRef();
+    const ref = collection(firestore,"email");
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        console.log(emailRef.current.value);
+
+        let data = {
+            email:emailRef.current.value,
+        }
+
+        try{
+            addDoc(ref,data);
+        }catch(e){
+            console.log(e);
+        }
+    }
+
     return(
         <div className="rounded-3xl border-2 mx-auto p-3 w-5/6 relative top-16 drop-shadow-sm shadow-lg shadow-indigo-500/30 bg-slate-50/5 ">
 
             {/* Sign in form */}
-            <form action="">
+            <form onSubmit={handleSubmit}>
                 <h2 className="font-bold text-lg my-1 mx-2 w-fit"> Sign in </h2>
 
                 <div  className=" w-full mx-auto" >
                     <br/>
                     <label for="email" className=" font-thin text-sm ml-2 ">Email</label><br/>
-                    <input type="email" id="email" name="email" className=" w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 ">
+                    <input type="email" id="email" name="email" className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 " ref={emailRef}>
                     </input><br/>
 
 
                     <label for="pwd" className=" font-thin text-sm ml-2 ">Password</label><br/>
-                    <input type="password" id="pwd" name="pwd" className=" w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 ">
+                    <input type="password" id="pwd" name="pwd" className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 " >
                     </input><br/>
 
                     <div className="w-1/2 mx-auto rounded-3xl py-1 bg-gradient-to-r from-purple-600 to-pink-400 mt-6">

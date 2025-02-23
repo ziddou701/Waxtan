@@ -1,5 +1,10 @@
 .App {
   text-align: center;
-  font-family: ;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}

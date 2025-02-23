@@ -1,6 +1,6 @@
 const Chat = () => {
     return(
-        <div className="grid grid-cols-5 bg-slate-200 shadow-md rounded-2xl my-5 mx-1 p-2">
+        <div className="grid grid-cols-5 bg-slate-200 shadow-md rounded-2xl my-3 mx-1 p-2">
 
             {/* Profile picture */}
             <div className="rounded-full w-16 h-16 bg-slate-100 ">
