@@ -1,5 +1,8 @@
 const SendMessage = () => {
     return(
+
+        
+
         <div className="fixed bottom-0 left-0 w-screen h-24 px-4 bg-slate-100">
 
             <form className="bg-white flex flex-row mx-auto mt-4 px-1 py-2 w-full rounded-full shadow-md">
