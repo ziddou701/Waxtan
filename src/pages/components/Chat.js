@@ -1,3 +1,5 @@
+
+
 const Chat = () => {
     return(
         <div className="grid grid-cols-5 bg-slate-200 shadow-md rounded-2xl my-3 mx-1 p-2">

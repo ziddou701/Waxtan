@@ -21,15 +21,15 @@ const LiveChat = () => {
                 
                 
                 {/* ---- body ---- */}
-                <div className="fixed top-24 w-full h-4/5 overflow-x-scroll bg-slate-100"> 
+                <div className="fixed top-24 w-full h-4/5 overflow-x-scroll bg-slate-100 pt-4"> 
 
                     {/* Incoming message */}
-                    <div className="w-3/5 my-3 ml-3 mr-auto ">
+                    <div className="w-3/5 my-2 ml-3 mr-auto ">
                         <p className=" bg-blue-100 shadow-sm p-2 px-4 rounded-full text-md text-slate-800 w-fit " >Hello there! </p>
                     </div>
 
                     {/* outgoing message */}
-                    <div className="w-3/5 my-3 mr-3 ml-auto ">
+                    <div className="w-3/5 my-2 mr-3 ml-auto ">
                        <p className=" bg-purple-600 shadow-sm py-2 px-4 rounded-full text-md text-white w-fit ml-auto " >Hi!</p>
                     </div>
                 </div>

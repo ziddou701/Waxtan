@@ -1,11 +1,15 @@
 import './App.css';
-import { BrowserRouter as Router , Route , Routes } from 'react-router-dom';
+import { BrowserRouter as Router , Route , Routes} from 'react-router-dom';
 import LandingPage from './pages/Landingpage'; 
 import Home from './pages/Home';
 import LiveChat from './pages/LiveChat';
+import { useState } from 'react';
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 
 function App() {
+
   return (
 
     <Router>
