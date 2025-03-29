@@ -6,7 +6,7 @@ const Chat = () => {
 
             {/* Profile picture */}
             <div className="rounded-full w-16 h-16 bg-slate-100 ">
-                <img src="" alt="img" className=""/>
+                <img src="/" alt="img" className=""/>
             </div>
 
             <div className="col-span-4 mr-2 ">

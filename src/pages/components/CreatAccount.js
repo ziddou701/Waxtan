@@ -9,15 +9,15 @@ const creatAccount = () => {
 
                 <div  className=" w-full mx-auto" >
                     <br/>
-                    <label for="userName" className=" font-thin text-sm ml-2 ">User Name</label><br/>
+                    <label htmlFor="userName" className=" font-thin text-sm ml-2 ">User Name</label><br/>
                     <input type="text" name="userName" className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 ">
                     </input><br/>
 
-                    <label for="email" className=" font-thin text-sm ml-2 ">Email</label><br/>
+                    <label htmlFor="email" className=" font-thin text-sm ml-2 ">Email</label><br/>
                     <input type="email" name="email" className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 ">
                     </input><br/>
 
-                    <label for="pwd" className=" font-thin text-sm ml-2 ">Password</label><br/>
+                    <label htmlFor="pwd" className=" font-thin text-sm ml-2 ">Password</label><br/>
                     <input type="password" name="pwd" className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 " >
                     </input><br/>
 

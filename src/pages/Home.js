@@ -1,7 +1,26 @@
+import Cookies from "universal-cookie";
 import ChatSearch from "./components/ChatSearch";
 import Chat from "./components/Chat";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const Home = () => {
+
+    const cookies = new Cookies();
+    const Navigate = useNavigate();
+    const logcook = cookies.get("auth-token");
+
+    useEffect( () => {
+        // console.log(logcook);
+
+        if(!logcook){
+            Navigate('/');
+          }else{
+            Navigate('/Home');
+          }
+    } , [] );
+
     return (
         <div className="w-full max-h-screen">
             <div className=" w-full px-5 py-5 mt-3 flex flex-row">

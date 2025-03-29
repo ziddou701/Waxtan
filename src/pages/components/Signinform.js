@@ -1,4 +1,4 @@
-import React, { useRef , useState } from "react";
+import React, { useEffect , useRef , useState } from "react";
 import {firestore, auth , provider} from "../../Firebase";
 import {addDoc , collection} from "@firebase/firestore";
 import CreatAccount from "./creatAccount";
@@ -23,6 +23,7 @@ const Signinform = () => {
         try{
         person = await signInWithPopup(auth, provider);
         cookies.set("auth-token", person.user.refreshToken);
+        cookies.set("auth-email", person.user.email);
 
         console.log(person);
         if(person.user.refreshToken){
@@ -34,6 +35,18 @@ const Signinform = () => {
             console.error(err);
         }
     };
+
+    const logcook = cookies.get("auth-token");
+
+    useEffect( () => {
+        // console.log(logcook);
+
+        if(!logcook){
+            Navigate('/');
+          }else{
+            Navigate('/Home');
+          }
+    } , [] );
     
 
 
@@ -70,12 +83,12 @@ const Signinform = () => {
 
                     <div  className=" w-full mx-auto" >
                         <br/>
-                        <label for="email" className=" font-thin text-sm ml-2 ">Email</label><br/>
+                        <label htmlFor="email" className=" font-thin text-sm ml-2 ">Email</label><br/>
                         <input type="email" id="email" name="email" required className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 " >
                         </input><br/>
 
 
-                        <label for="pwd" className=" font-thin text-sm ml-2 ">Password</label><br/>
+                        <label htmlFor="pwd" className=" font-thin text-sm ml-2 ">Password</label><br/>
                         <input type="password" id="pwd" name="pwd" required className=" text-slate-700 w-full mx-auto my-1 px-3 py-1 rounded-xl bg-slate-50 " >
                         </input><br/>
 

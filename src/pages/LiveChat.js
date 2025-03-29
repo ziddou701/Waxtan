@@ -12,7 +12,7 @@ const LiveChat = () => {
                 </div>
                 {/* Profile pic */}
                 <div className="rounded-full bg-slate-100 w-12 h-12">
-                    <img src="" alt="Img" />
+                    <img src="/" alt="Img" />
                 </div>
                 {/* User Name */}
                 <div className=" mx-3 py-3 text-md text-slate-800 font-bold">
