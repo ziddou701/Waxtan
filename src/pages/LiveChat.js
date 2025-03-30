@@ -1,13 +1,29 @@
 import Sendmessage from "./components/Sendmessage";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect} from "react";
+import Cookies from "universal-cookie";
 
 const LiveChat = () => {
+    
+    const cookies = new Cookies();
+    const Navigate = useNavigate();
+    const logCookie = cookies.get("auth-token");
+
+    useEffect( () => {
+        
+        if(!logCookie){
+            Navigate('/');
+          }else{
+            Navigate('/Live');
+          }
+    } , [] );
+
     return(
         <div>
             {/* top bar */}
             <div className="fixed w-full pb-2 pt-7 flex flex-row shadow-lg">
                 {/* Back button */}
-                <div className="w-5 py-3 mx-5">
+                <div className="w-5 py-3 mx-5" onClick={()=> { Navigate('/Home'); }}>
                     <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 384 512" className="fill-purple-700"><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
                 </div>
                 {/* Profile pic */}

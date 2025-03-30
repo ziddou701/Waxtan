@@ -10,13 +10,12 @@ const Home = () => {
 
     const cookies = new Cookies();
     const Navigate = useNavigate();
-    const logcook = cookies.get("auth-token");
+    const logCookie = cookies.get("auth-token");
     const [refresh , setRefresh] = useState(false);
 
     useEffect( () => {
-        // console.log(logcook);
-
-        if(!logcook){
+        
+        if(!logCookie){
             Navigate('/');
           }else{
             Navigate('/Home');

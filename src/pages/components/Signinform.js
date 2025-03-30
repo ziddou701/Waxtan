@@ -23,9 +23,9 @@ const Signinform = () => {
         try{
         person = await signInWithPopup(auth, provider);
         cookies.set("auth-token", person.user.refreshToken);
-        cookies.set("auth-email", person.user.email);
+        cookies.set("sender-email", person.user.email);
 
-        console.log(person);
+        // console.log(person);
         if(person.user.refreshToken){
             Navigate('/Home');
           }else{
@@ -39,7 +39,6 @@ const Signinform = () => {
     const logcook = cookies.get("auth-token");
 
     useEffect( () => {
-        // console.log(logcook);
 
         if(!logcook){
             Navigate('/');
