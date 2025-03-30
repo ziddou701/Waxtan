@@ -1,10 +1,10 @@
 import React, { useEffect , useRef , useState } from "react";
-import {firestore, auth , provider} from "../../Firebase";
-import {addDoc , collection} from "@firebase/firestore";
+import {firestore, auth , googleProvider} from "../../Firebase";
+import {addDoc , setDoc , getDoc , getDocs , doc , collection} from "@firebase/firestore";
 import CreatAccount from "./creatAccount";
 import { signInWithPopup } from "firebase/auth";
 import Cookies from "universal-cookie";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 
 const cookies = new Cookies();
 
@@ -12,32 +12,71 @@ const Signinform = () => {
 
     let person;
     const Navigate = useNavigate();
-    const [signInState , setSignInState] = useState(true);
+    const [canSignIn , setcanSignIn] = useState(true);
     
-    function chancgeSignInState(e) {
+    function changecanSignIn(e) {
         e.preventDefault();
-        setSignInState(!signInState);
+        setcanSignIn(!canSignIn);
     };
 
+    
+    // Set required cookies and usr data
     const SignInWithGoogle = async () => {
-        try{
-        person = await signInWithPopup(auth, provider);
-        cookies.set("auth-token", person.user.refreshToken);
-        cookies.set("sender-email", person.user.email);
+        
+        try
+        {
+            person = await signInWithPopup(auth, googleProvider);
+            cookies.set("auth-token", person.user.refreshToken);
+            cookies.set("sender-email", person.user.email);
 
-        // console.log(person);
-        if(person.user.refreshToken){
-            Navigate('/Home');
-          }else{
-            Navigate('/');
-          }
-        } catch(err) {
+            console.log(person);
+            if(person.user.refreshToken){
+                Navigate('/Home');
+            }else{
+                Navigate('/');
+            }
+
+            // Adding non existing users to the data base
+            const docSnap = await getDocs(collection(firestore, 'Users'));
+            const usersEmails = docSnap.docs.map((doc) => doc.id);
+            console.log(usersEmails);
+
+                if (usersEmails.includes(person.user.email))
+                {
+                    console.log('user already exists');
+                }
+                else
+                {
+                    console.log('not in database');
+
+                    let data = {
+                        email: person.user.email ,
+                        displayName: person.user.displayName ,
+                        picture: person.user.photoURL , 
+                    };
+                    
+                    try
+                    {
+                        let addUser = setDoc(doc(firestore, 'Users' , data.email ) , data);
+                        console.log('user added')
+                    }
+                    catch(err)
+                    {
+                        console.log(err);
+                    }
+                }
+            
+
+        } 
+        catch(err) 
+        {
             console.error(err);
         }
+
     };
 
+    // Keep user logged-in
     const logcook = cookies.get("auth-token");
-
     useEffect( () => {
 
         if(!logcook){
@@ -73,7 +112,7 @@ const Signinform = () => {
 
     return(
         <div>  
-            { signInState ?
+            { canSignIn ?
             <div className="rounded-3xl border-2 mx-auto p-3 w-5/6 relative top-16 drop-shadow-sm shadow-lg shadow-indigo-500/30 bg-slate-50/5 ">
 
                 {/* Sign in form */}
@@ -108,7 +147,7 @@ const Signinform = () => {
 
                 <div className="w-fit mx-auto grid grid-flow-row">
                     <p className="text-sm font-light text-slate-500"> Don't have an acount?
-                    <a href="" className="ml-2 text-sm font-black text-slate-500 underline" onClick={chancgeSignInState} >Sign Up</a>
+                    <a href="" className="ml-2 text-sm font-black text-slate-500 underline" onClick={changecanSignIn} >Sign Up</a>
                     </p>
                 </div>
 
@@ -121,7 +160,7 @@ const Signinform = () => {
 
                 <div className="w-fit mx-auto grid grid-flow-row mt-20">
                     <p className="text-sm font-light text-slate-500"> Already have an acount?
-                    <a className="ml-2 text-sm font-black text-slate-500 underline" onClick={chancgeSignInState}>Sign In</a>
+                    <a className="ml-2 text-sm font-black text-slate-500 underline" onClick={changecanSignIn}>Sign In</a>
                     </p>
                 </div>
             </div>
