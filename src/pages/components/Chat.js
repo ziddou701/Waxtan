@@ -5,10 +5,10 @@ const Chat = () => {
     const Navigate = useNavigate();
 
     return(
-        <div className="grid grid-cols-5 bg-slate-200 shadow-md rounded-2xl my-3 mx-1 p-2" onClick={() => { Navigate('/Live'); }}>
+        <div className="grid grid-cols-5 bg-slate-100 rounded-2xl my-2 mx-2 p-2" onClick={() => { Navigate('/Live'); }}>
 
             {/* Profile picture */}
-            <div className="rounded-full w-16 h-16 bg-slate-100 ">
+            <div className="rounded-full w-16 h-16 bg-white ">
                 <img src="/" alt="img" className=""/>
             </div>
 

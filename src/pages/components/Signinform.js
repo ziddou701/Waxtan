@@ -22,7 +22,7 @@ const Signinform = () => {
     
     // Set required cookies and usr data
     const SignInWithGoogle = async () => {
-        
+
         try
         {
             person = await signInWithPopup(auth, googleProvider);
@@ -30,6 +30,8 @@ const Signinform = () => {
             cookies.set("sender-email", person.user.email);
 
             console.log(person);
+
+            // Keep user logged in if verified
             if(person.user.refreshToken){
                 Navigate('/Home');
             }else{
@@ -110,6 +112,8 @@ const Signinform = () => {
     // ref={emailRef}
     // };
 
+
+    
     return(
         <div>  
             { canSignIn ?
