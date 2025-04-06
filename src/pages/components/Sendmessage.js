@@ -1,19 +1,31 @@
-import { useState , useRef } from "react";
+import { useState } from "react";
+import Cookies from "universal-cookie";
+import { firestore } from "../../Firebase";
 
 
 
 const SendMessage = () => {
 
     const [messageOut , setMessageOut] = useState('');
+    const cookies = new Cookies();
 
+
+    let senderEmail = cookies.get("sender-email");
+    
     // console.log(messageOut);
     const handleMessageOut = (e) =>{
         e.preventDefault();
-        if (messageOut ===''){
+        if (messageOut ==='')
+        {
             console.log('empty message');
         }
-        console.log(messageOut);
-        setMessageOut('');
+        else
+        {
+            console.log(senderEmail);
+
+            console.log(messageOut);
+            setMessageOut('');
+        }
     }
 
     return(

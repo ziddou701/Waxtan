@@ -1,7 +1,9 @@
 import Cookies from "universal-cookie";
 import Chat from "./components/Chat";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {addDoc , setDoc , getDoc , getDocs , doc , collection} from "@firebase/firestore";
+import { firestore } from "../Firebase";
 
 
 
@@ -11,6 +13,12 @@ const Home = () => {
     const Navigate = useNavigate();
     const logCookie = cookies.get("auth-token");
     const [refresh , setRefresh] = useState(false);
+    const [users , setUsers] = useState([]);
+
+
+
+
+// Verifying User login state
 
     useEffect( () => {
 
@@ -26,32 +34,65 @@ const Home = () => {
         setRefresh(true);
     };
 
-// Create and Handle Creat New Chat
+
+
+// Create and Handle New Chat
     const [creatNewChat , setCreatNewChat] = useState(false);
 
-    const creatNewChatState = () =>{
+    const creatNewChatState = async() =>{
         setCreatNewChat(!creatNewChat);
+        fetchUserList();
     }
 
-    const handleCreatNewChat = () =>{
+    const handleCreateNewChat = (receiverEmail) =>{
 
-
+        cookies.set('receiver-Email' , receiverEmail);
         Navigate('/Live');
+
     };
 
+    // Fetching user list
+    const fetchUserList = async (err) => {
+        try
+        {
+            const docSnap = await getDocs(collection(firestore, 'Users'));
+            const user = docSnap.docs.map((doc) => (
+                {
+                    name: doc.data().displayName,
+                    email: doc.data().email,
+                    pictureUrl: doc.data().picture,
+                
+                }));
 
-//Handle search bar focus statu
+            console.log(user);
+
+            setUsers(user);
+        }
+        catch
+        {
+            console.log(err);
+        }
+    };
+
+//Handle search bar focus status
+
     const [searchBarInFocus , setSearchBarInFocus] = useState(false);
 
     const changeFocusState = () =>{
         setSearchBarInFocus(!searchBarInFocus);
     }
 
-    // const handleCreatNewChat = () =>{
 
 
-    //     Navigate('/Live');
-    // };
+
+
+
+
+
+
+
+
+
 
 
 
@@ -68,45 +109,61 @@ const Home = () => {
 
 
 {/* Creat new chat button */}
-                <div className=" ml-auto mr-5 w-6" onClick={creatNewChatState}>
+
+                <div className=" ml-auto mr-5 w-6" onClick={creatNewChatState} >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M373.1 24.97C401.2-3.147 446.8-3.147 474.9 24.97L487 37.09C515.1 65.21 515.1 110.8 487 138.9L289.8 336.2C281.1 344.8 270.4 351.1 258.6 354.5L158.6 383.1C150.2 385.5 141.2 383.1 135 376.1C128.9 370.8 126.5 361.8 128.9 353.4L157.5 253.4C160.9 241.6 167.2 230.9 175.8 222.2L373.1 24.97zM440.1 58.91C431.6 49.54 416.4 49.54 407 58.91L377.9 88L424 134.1L453.1 104.1C462.5 95.6 462.5 80.4 453.1 71.03L440.1 58.91zM203.7 266.6L186.9 325.1L245.4 308.3C249.4 307.2 252.9 305.1 255.8 302.2L390.1 168L344 121.9L209.8 256.2C206.9 259.1 204.8 262.6 203.7 266.6zM200 64C213.3 64 224 74.75 224 88C224 101.3 213.3 112 200 112H88C65.91 112 48 129.9 48 152V424C48 446.1 65.91 464 88 464H360C382.1 464 400 446.1 400 424V312C400 298.7 410.7 288 424 288C437.3 288 448 298.7 448 312V424C448 472.6 408.6 512 360 512H88C39.4 512 0 472.6 0 424V152C0 103.4 39.4 64 88 64H200z"/></svg>
                 </div>
+
 {/* Settings/Sign out Button */}
+
                 <div className="w-1.5 mr-2 " onClick={delCookies}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512"><path d="M64 360c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zm0-160c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zM120 96c0 30.9-25.1 56-56 56S8 126.9 8 96S33.1 40 64 40s56 25.1 56 56z"/></svg>
                 </div>
             </div>
 
-{/* hidden contact list */}
-            {creatNewChat &&
-            <div className="w-full h-screen overflow-y-scroll overflow-x-hidden bg-slate-100 px-2 ">
+{/* hidden contact list 
+will use data.map to map all chats and use useRef to get the senderEmail and set it as a cookie that will be use to send messages*/}
 
-                <div className="flex flex-row border-solid border-b-2 border-slate-200 py-2" onClick={handleCreatNewChat}>
+            { creatNewChat &&
+            <div className="w-full h-screen overflow-y-scroll overflow-x-hidden bg-slate-100 px-2 " >
+            { users.map((user, index) => (
+                <div className="flex flex-row border-solid border-b-2 border-slate-200 py-2" key={index} onClick={() => handleCreateNewChat(user.email)}>
 
                     {/* Profile picture */}
-                    <div className="rounded-full w-14 h-14 bg-white ">
-                        <img src="/" alt="img" className=""/>
+                    <div className="rounded-full w-12 h-12 bg-white ">
+                        <img src={user.pictureUrl} alt="img" className="rounded-full"/>
                     </div>
 
                     <div className=" ml-5 my-auto ">
                         {/* User Name */}
-                        <div className=" text-lg text-slate-800 font-bold">
-                            User Name
+                        <div className=" text-base text-slate-800 font-bold">
+                            <span>{user.name}</span>
                         </div>
                     </div>
 
-                    <h1 className=" w-fit h-fit px-3 py-1 text-md font-black text-slate-50 rounded-full 
-                    bg-gradient-to-r from-pink-400 to-purple-600 my-auto ml-auto mr-5" onClick={handleCreatNewChat}> 
+                    <h1 className=" w-fit h-fit px-3 py-1 text-sm font-black text-slate-50 rounded-full 
+                    bg-gradient-to-r from-pink-400 to-purple-600 my-auto ml-auto mr-5" 
+                        onClick={(e) => {
+                            e.stopPropagation(); // to prevent bubbling if needed
+                            handleCreateNewChat(user.email);
+                        }}> 
                     New Chat 
                     </h1>
 
-                </div>
+                    <p className="hidden">{user.email}</p>
 
-            </div>
+                </div>))
             }
 
+                <div className="h-16 w-full text-slate-400 text-sm font-light">
+                    <p className="mx-auto w-fit my-5 border-b-2 border-slate-800">End</p>
+                </div>
+
+            </div>}
+            
 
 {/* Chat search bar */}
+
             <div>
                 <div className=" py-5 shadow-sm w-fit mx-auto">
                     <form>
@@ -121,6 +178,7 @@ const Home = () => {
                 </div>
 
 {/* hidden search results */}
+
                 {searchBarInFocus && 
                 <div className="w-full h-screen overflow-y-scroll overflow-x-hidden bg-slate-100 p-2 ">
 
@@ -163,6 +221,9 @@ const Home = () => {
                 <Chat/>
                 <Chat/>
                 <Chat/>
+                <div className="h-16 w-full text-slate-400 text-sm font-light">
+                    <p className="mx-auto w-fit my-5 border-b-2 border-slate-700">End</p>
+                </div>
             </div>
 
         </div>
