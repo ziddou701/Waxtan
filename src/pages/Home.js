@@ -66,6 +66,7 @@ const Home = () => {
                   pictureUrl: data.picture?.trim() === ""
                   ? "https://cdn-icons-png.freepik.com/512/7855/7855833.png"
                   : data.picture
+                  // checking to see if the user has a picture or not
                 }});
 
             console.log(user);
