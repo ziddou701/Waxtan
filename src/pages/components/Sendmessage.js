@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Cookies from "universal-cookie";
 import { firestore } from "../../Firebase";
+import { doc, query, where, collection, getDocs, updateDoc, arrayUnion } from "@firebase/firestore";
+
 
 
 
@@ -12,39 +14,71 @@ const SendMessage = () => {
 
     const senderEmail = cookies.get("sender-email");
     const receiverEmail = cookies.get('receiver-email');
-    // console.log("ChatRoom name: "+senderEmail+"-"+receiverEmail);
+
+    const sendMessage = async (message) => {
+        try {
+          const chatRoomsRef = collection(firestore, "ChatRooms");
+      
+          // Query for chat rooms that include the sender
+          const q = query(chatRoomsRef, where("participants", "array-contains", senderEmail));
+          const querySnapshot = await getDocs(q);
+      
+          // Find the document where participants include both sender and receiver
+          const matchingDoc = querySnapshot.docs.find((doc) => {
+            const participants = doc.data().participants;
+            return participants.includes(receiverEmail);
+          });
+      
+          if (matchingDoc) {
+            const chatRoomRef = doc(firestore, "ChatRooms", matchingDoc.id);
+      
+            // Append the new message to the array
+            await updateDoc(chatRoomRef, {
+              messages: arrayUnion(message),
+            });
+      
+            console.log("✅ Message sent!");
+          } else {
+            console.log("❌ No chat room found with both participants.");
+          }
+        } catch (err) {
+          console.error("🔥 Error sending message:", err);
+        }
+      
+        console.log(senderEmail + " : " + messageOut);
+        setMessageOut('');
+      };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // console.log(messageOut);
     const handleMessageOut = (e) =>{
         e.preventDefault();
         if (messageOut ==='')
         {
-            console.log('empty message');
+            console.log('empty message, not sent');
         }
         else
         {
-            console.log(senderEmail);
-
-            console.log(messageOut);
-            setMessageOut('');
+            let message = {
+                sender: senderEmail,
+                text: messageOut,
+                time: new Date(),
+            };
+            sendMessage(message);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return(
         <div className="fixed bottom-0 left-0 w-screen h-24 px-4 bg-slate-100">

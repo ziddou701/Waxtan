@@ -1,12 +1,13 @@
 import Sendmessage from "./components/Sendmessage";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState} from "react";
+import { useEffect, useRef, useState} from "react";
 import Cookies from "universal-cookie";
-import {addDoc , setDoc , getDoc , getDocs , doc , collection} from "@firebase/firestore";
+import {addDoc , setDoc , getDoc , getDocs , doc , collection, query, where} from "@firebase/firestore";
 import { firestore } from "../Firebase";
 
 const LiveChat = () => {
     
+    const hasCreatedRef = useRef(false);
     const cookies = new Cookies();
     const Navigate = useNavigate();
     const logCookie = cookies.get("auth-token");
@@ -22,9 +23,12 @@ const LiveChat = () => {
           }else{
             Navigate('/Live');
           };
-        
-        fetchReceiverDetails();
-        CreateNewChatRoom(); //calling the create new chat room fuction if does not exist
+          
+        if (!hasCreatedRef.current) {
+            fetchReceiverDetails();
+            CreateNewChatRoom(senderEmail, receiverEmail); //calling the create new chat room fuction if does not exist
+            hasCreatedRef.current = true;
+        }
     } , [] );
 
 
@@ -55,46 +59,41 @@ const LiveChat = () => {
     }
 
     const senderEmail = cookies.get('sender-email');
-    const currentChatRoom = (senderEmail+"-"+receiverEmail);
 
-
-    const CreateNewChatRoom = async () => {
-        try
-        {
-            let docSnap = await getDocs(collection(firestore, 'ChatRooms'));
-            let chatRooms = docSnap.docs.map((doc) => doc.id);
-            console.log(chatRooms);
-
-            if (chatRooms.includes(currentChatRoom))
-                {
-                    console.log('current chatroom exists');
-                }
-                else
-                {
-                    console.log('current chatroom not in database');
-
-                    let data = {
-                        sender: senderEmail ,
-                        receiver: receiverEmail ,
-                        messages: [] ,
-                    };
-
-                    try
-                    {
-                        let addNewChatRoom = setDoc(doc(firestore, 'ChatRooms' , currentChatRoom ) , data);
-                        console.log('chatRoom added');
-                    }
-                    catch(err)
-                    {
-                        console.log(err);
-                    }
-                }
+    const CreateNewChatRoom = async (senderEmail, receiverEmail) => {
+        try {
+          const chatRoomsRef = collection(firestore, "ChatRooms");
+      
+          // Query for chat rooms where senderEmail is a participant
+          const chatQuery = query(
+            chatRoomsRef,
+            where("participants", "array-contains", senderEmail)
+          );
+      
+          const docSnap = await getDocs(chatQuery);
+      
+          // Check if any of the returned documents also contain receiverEmail
+          const existingRoom = docSnap.docs.find((doc) => {
+            const participants = doc.data().participants;
+            return participants.includes(receiverEmail);
+          });
+      
+          if (existingRoom) {
+            console.log("✅ Chat room already exists:", existingRoom.id);
+          } else {
+            // Create a new chat room with random ID
+            const data = {
+              participants: [senderEmail, receiverEmail],
+              messages: [],
+            };
+      
+            const newDocRef = await addDoc(chatRoomsRef, data);
+            console.log("🆕 Chat room created with ID:", newDocRef.id);
+          }
+        } catch (err) {
+          console.error("🔥 Error creating chat room:", err);
         }
-        catch(err)
-        {
-            console.log(err);
-        }
-    }
+      };
 
     //Pull in the chat history function
 
@@ -131,12 +130,12 @@ const LiveChat = () => {
             <div className="fixed top-24 w-full h-4/5 overflow-x-scroll bg-slate-100 pt-4"> 
 
                 {/* Incoming message */}
-                <div className="w-3/5 my-2 ml-3 mr-auto ">
+                <div className="w-3/5 my-1 ml-3 mr-auto ">
                     <p className=" bg-blue-100 shadow-sm p-2 px-4 rounded-full text-md text-slate-800 w-fit " >Hello there! </p>
                 </div>
 
                 {/* outgoing message */}
-                <div className="w-3/5 my-2 mr-3 ml-auto ">
+                <div className="w-3/5 my-1 mr-3 ml-auto ">
                     <p className=" bg-purple-600 shadow-sm py-2 px-4 rounded-full text-md text-white w-fit ml-auto " >Hi!</p>
                 </div>
             </div>
