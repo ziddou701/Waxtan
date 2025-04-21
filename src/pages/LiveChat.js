@@ -2,7 +2,7 @@ import Sendmessage from "./components/Sendmessage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState} from "react";
 import Cookies from "universal-cookie";
-import {addDoc , setDoc , getDoc , getDocs , doc , collection, query, where} from "@firebase/firestore";
+import {addDoc , setDoc , onSnapshot, getDoc , getDocs , doc , collection, query, where} from "@firebase/firestore";
 import { firestore } from "../Firebase";
 
 const LiveChat = () => {
@@ -23,12 +23,13 @@ const LiveChat = () => {
           }else{
             Navigate('/Live');
           };
-          
+
         if (!hasCreatedRef.current) {
             fetchReceiverDetails();
             CreateNewChatRoom(senderEmail, receiverEmail); //calling the create new chat room fuction if does not exist
             hasCreatedRef.current = true;
         }
+
     } , [] );
 
 
@@ -95,11 +96,47 @@ const LiveChat = () => {
         }
       };
 
-    //Pull in the chat history function
+    //////////////////Pull in the chat history function
 
+      const useChatMessages = (senderEmail, receiverEmail) => {
+        const [messages, setMessages] = useState([]);
+      
+        useEffect(() => {
+          if (!senderEmail || !receiverEmail) return;
+      
+          const chatRoomsRef = collection(firestore, "ChatRooms");
+      
+          const q = query(chatRoomsRef, where("participants", "array-contains", senderEmail));
+      
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const matchingDoc = querySnapshot.docs.find((doc) => {
+              const participants = doc.data().participants;
+              return participants.includes(receiverEmail);
+            });
+      
+            if (matchingDoc) {
+              const data = matchingDoc.data();
+              const sortedMessages = [...(data.messages || [])].sort(
+                (a, b) => new Date(a.time) - new Date(b.time)
+              );
+              setMessages(sortedMessages);
+              console.log("✅ Messages retrieved:", sortedMessages);
+            } else {
+              setMessages([]);
+              console.log(" No messages found");
+            }
+          });
+      
+          // Cleanup listener on unmount
+          return () => unsubscribe();
+        }, [senderEmail, receiverEmail]);
+      
+        return messages;
+      };
 
+      const messages = useChatMessages(senderEmail, receiverEmail);
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -129,15 +166,13 @@ const LiveChat = () => {
             {/* ---- body ---- */}
             <div className="fixed top-24 w-full h-4/5 overflow-x-scroll bg-slate-100 pt-4"> 
 
-                {/* Incoming message */}
-                <div className="w-3/5 my-1 ml-3 mr-auto ">
-                    <p className=" bg-blue-100 shadow-sm p-2 px-4 rounded-full text-md text-slate-800 w-fit " >Hello there! </p>
+                {messages.map((msg, index) => (
+                <div className={msg.sender === senderEmail ? 'w-3/5 my-1 mr-3 ml-auto' : 'w-3/5 my-1 ml-3 mr-auto'} key={index}>
+                    <p className={msg.sender === senderEmail ? 'bg-purple-600 shadow-sm py-2 px-4 rounded-2xl text-md text-white w-fit ml-auto' : 
+                    'bg-blue-100 shadow-sm p-2 px-4 rounded-2xl text-md text-slate-800 w-fit' }>{msg.text}</p>
                 </div>
+                 ))}
 
-                {/* outgoing message */}
-                <div className="w-3/5 my-1 mr-3 ml-auto ">
-                    <p className=" bg-purple-600 shadow-sm py-2 px-4 rounded-full text-md text-white w-fit ml-auto " >Hi!</p>
-                </div>
             </div>
 
             {/* Send message */}
