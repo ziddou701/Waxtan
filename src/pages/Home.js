@@ -18,6 +18,7 @@ const Home = () => {
 
 
 
+
 // Verifying User login state
 
     useEffect( () => {
@@ -46,7 +47,7 @@ const Home = () => {
 
     const handleCreateNewChat = (receiverEmail) =>{
 
-        cookies.set('receiver-Email' , receiverEmail);
+        cookies.set('receiver-email' , receiverEmail);
         Navigate('/Live');
 
     };
@@ -56,13 +57,16 @@ const Home = () => {
         try
         {
             const docSnap = await getDocs(collection(firestore, 'Users'));
-            const user = docSnap.docs.map((doc) => (
-                {
-                    name: doc.data().displayName,
-                    email: doc.data().email,
-                    pictureUrl: doc.data().picture,
-                
-                }));
+            const user = docSnap.docs.map((doc) => {
+                const data = doc.data();
+              
+                return {
+                  name: data.displayName,
+                  email: data.email,
+                  pictureUrl: data.picture?.trim() === ""
+                  ? "https://cdn-icons-png.freepik.com/512/7855/7855833.png"
+                  : data.picture
+                }});
 
             console.log(user);
 
@@ -74,7 +78,7 @@ const Home = () => {
         }
     };
 
-//Handle search bar focus status
+//Handle search bar status and list
 
     const [searchBarInFocus , setSearchBarInFocus] = useState(false);
 
@@ -149,8 +153,6 @@ will use data.map to map all chats and use useRef to get the senderEmail and set
                         }}> 
                     New Chat 
                     </h1>
-
-                    <p className="hidden">{user.email}</p>
 
                 </div>))
             }
