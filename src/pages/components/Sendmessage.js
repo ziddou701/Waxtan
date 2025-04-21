@@ -10,8 +10,26 @@ const SendMessage = () => {
     const cookies = new Cookies();
 
 
-    let senderEmail = cookies.get("sender-email");
-    
+    const senderEmail = cookies.get("sender-email");
+    const receiverEmail = cookies.get('receiver-email');
+    // console.log("ChatRoom name: "+senderEmail+"-"+receiverEmail);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // console.log(messageOut);
     const handleMessageOut = (e) =>{
         e.preventDefault();

@@ -45,11 +45,11 @@ const Signinform = () => {
 
                 if (usersEmails.includes(person.user.email))
                 {
-                    console.log('user already exists');
+                    console.log('current user exists');
                 }
                 else
                 {
-                    console.log('not in database');
+                    console.log('current user not in database');
 
                     let data = {
                         email: person.user.email ,
@@ -113,7 +113,7 @@ const Signinform = () => {
     // };
 
 
-    
+
     return(
         <div>  
             { canSignIn ?

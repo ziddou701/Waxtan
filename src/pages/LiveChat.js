@@ -10,8 +10,8 @@ const LiveChat = () => {
     const cookies = new Cookies();
     const Navigate = useNavigate();
     const logCookie = cookies.get("auth-token");
-    const [receiverEmail , setReceiverEmail] = useState('receiver email not set');
     const [receiver , setReceiver] = useState({});
+    const receiverEmail = cookies.get('receiver-email'); //getting the receiver email cookie
 
 
 // Check User laggin status
@@ -23,17 +23,13 @@ const LiveChat = () => {
             Navigate('/Live');
           };
         
-        fetchReceiverEmail(); // calling the fecth user Email function (getting cookie)
         fetchReceiverDetails();
-    } , [receiverEmail] );
+        CreateNewChatRoom(); //calling the create new chat room fuction if does not exist
+    } , [] );
 
 
 
-// Fetch user information and creating chat
-    const fetchReceiverEmail = async () => {
-        let t = cookies.get('receiver-email');
-        setReceiverEmail(t);
-    };
+// Fetch user information and creating chatRoom
     
     const fetchReceiverDetails = async () => {
         try
@@ -58,9 +54,50 @@ const LiveChat = () => {
         };
     }
 
-    const createNewChat = async (chatRoom) => {
-        
+    const senderEmail = cookies.get('sender-email');
+    const currentChatRoom = (senderEmail+"-"+receiverEmail);
+
+
+    const CreateNewChatRoom = async () => {
+        try
+        {
+            let docSnap = await getDocs(collection(firestore, 'ChatRooms'));
+            let chatRooms = docSnap.docs.map((doc) => doc.id);
+            console.log(chatRooms);
+
+            if (chatRooms.includes(currentChatRoom))
+                {
+                    console.log('current chatroom exists');
+                }
+                else
+                {
+                    console.log('current chatroom not in database');
+
+                    let data = {
+                        sender: senderEmail ,
+                        receiver: receiverEmail ,
+                        messages: [] ,
+                    };
+
+                    try
+                    {
+                        let addNewChatRoom = setDoc(doc(firestore, 'ChatRooms' , currentChatRoom ) , data);
+                        console.log('chatRoom added');
+                    }
+                    catch(err)
+                    {
+                        console.log(err);
+                    }
+                }
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
     }
+
+    //Pull in the chat history function
+
 
 
 
