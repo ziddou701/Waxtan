@@ -45,9 +45,9 @@ const LiveChat = () => {
             const userData = {
                 name: data.displayName,
                 email: data.email,
-                picture: data.picture?.trim() === ""
-                ? "https://cdn-icons-png.freepik.com/512/7855/7855833.png"
-                : data.picture ?? "https://cdn-icons-png.freepik.com/512/7855/7855833.png"
+                picture: data.picture && data.picture.trim() !== ""
+                    ? data.picture
+                    : "https://cdn-icons-png.freepik.com/512/7855/7855833.png"
                 // checking to see if the user has a picture or not
             };
             setReceiver(userData);
@@ -136,6 +136,11 @@ const LiveChat = () => {
 
       const messages = useChatMessages(senderEmail, receiverEmail);
 
+      const messagesEndRef = useRef(null); // scroll last message into view
+      useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, [messages]);
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -164,14 +169,20 @@ const LiveChat = () => {
 
                 
             {/* ---- body ---- */}
-            <div className="fixed top-24 w-full h-4/5 overflow-x-scroll bg-slate-100 pt-4"> 
+            <div className="fixed top-24 w-full h-5/6 overflow-x-scroll bg-slate-100 pt-4"> 
 
                 {messages.map((msg, index) => (
                 <div className={msg.sender === senderEmail ? 'w-3/5 my-1 mr-3 ml-auto' : 'w-3/5 my-1 ml-3 mr-auto'} key={index}>
-                    <p className={msg.sender === senderEmail ? 'bg-purple-600 shadow-sm py-2 px-4 rounded-2xl text-md text-white w-fit ml-auto' : 
-                    'bg-blue-100 shadow-sm p-2 px-4 rounded-2xl text-md text-slate-800 w-fit' }>{msg.text}</p>
+                    <div className={msg.sender === senderEmail ? 'bg-purple-600 shadow-sm py-2 px-4 rounded-2xl text-md text-white w-fit ml-auto' : 
+                        'bg-blue-100 shadow-sm p-2 px-4 rounded-2xl text-md text-slate-800 w-fit' }>{msg.text}
+                        <br/>
+                        <p className="text-xs font-light py-1 ml-auto mr-0 w-fit">{msg.now}</p>
+                    </div>
                 </div>
                  ))}
+
+                {/* Dummy div to scroll to */}
+                <div ref={messagesEndRef} className="h-1/6" />
 
             </div>
 

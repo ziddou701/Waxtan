@@ -14,6 +14,7 @@ const Home = () => {
     const logCookie = cookies.get("auth-token");
     const [refresh , setRefresh] = useState(false);
     const [users , setUsers] = useState([]);
+    const senderEmail = cookies.get('sender-email');
 
 
 
@@ -121,8 +122,8 @@ const Home = () => {
 
 {/* Settings/Sign out Button */}
 
-                <div className="w-1.5 mr-2 " onClick={delCookies}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512"><path d="M64 360c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zm0-160c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zM120 96c0 30.9-25.1 56-56 56S8 126.9 8 96S33.1 40 64 40s56 25.1 56 56z"/></svg>
+                <div className="w-7 mr-1 " onClick={delCookies}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M534.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L434.7 224 224 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM192 96c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-53 0-96 43-96 96l0 256c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"/></svg>
                 </div>
             </div>
 
@@ -131,7 +132,7 @@ will use data.map to map all chats and use useRef to get the senderEmail and set
 
             { creatNewChat &&
             <div className="w-full h-screen overflow-y-scroll overflow-x-hidden bg-slate-100 px-2 " >
-            { users.map((user, index) => (
+            { users.map((user, index) => ( user.email !== senderEmail ? (
                 <div className="flex flex-row border-solid border-b-2 border-slate-200 py-2" key={index} onClick={() => handleCreateNewChat(user.email)}>
 
                     {/* Profile picture */}
@@ -155,7 +156,7 @@ will use data.map to map all chats and use useRef to get the senderEmail and set
                     New Chat 
                     </h1>
 
-                </div>))
+                </div>) : null))
             }
 
                 <div className="h-16 w-full text-slate-400 text-sm font-light">
@@ -168,7 +169,7 @@ will use data.map to map all chats and use useRef to get the senderEmail and set
 {/* Chat search bar */}
 
             <div>
-                <div className=" py-5 shadow-sm w-fit mx-auto">
+                <div className=" py-5 shadow-sm w-fit mx-auto ">
                     <form>
                     {/* search button */}
                     <div className="flex flex-row w-full rounded-2xl bg-slate-100 ">

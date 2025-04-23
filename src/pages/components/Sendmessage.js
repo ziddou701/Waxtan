@@ -58,10 +58,18 @@ const SendMessage = () => {
         }
         else
         {
+            let time = new Date();
+            let formattedTime = time.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            });
+
             let message = {
                 sender: senderEmail,
                 text: messageOut,
                 time: new Date(),
+                now: formattedTime,
             };
             sendMessage(message);
         }
