@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/waxtan/static/css/main.aa66c955.css",
+    "main.js": "/waxtan/static/js/main.86b782d0.js",
+    "static/js/488.21e3ecbf.chunk.js": "/waxtan/static/js/488.21e3ecbf.chunk.js",
+    "index.html": "/waxtan/index.html",
+    "main.aa66c955.css.map": "/waxtan/static/css/main.aa66c955.css.map",
+    "main.86b782d0.js.map": "/waxtan/static/js/main.86b782d0.js.map",
+    "488.21e3ecbf.chunk.js.map": "/waxtan/static/js/488.21e3ecbf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aa66c955.css",
+    "static/js/main.86b782d0.js"
+  ]
+}
