@@ -87,9 +87,15 @@ const Home = () => {
         }
     };
 
+    const topOfHomePage = useRef(null); // scroll last message into view
+      useEffect(() => {
+        topOfHomePage.current?.scrollIntoView({ behavior: 'smooth' });
+      }, []);
+
 
     return (
-        <div className="w-full ">
+        <div className="w-full fixed ">
+            <div ref={topOfHomePage} className="h-1" />
 
         <div className="w-full lg:w-1/3 lg:shadow-lg h-screen relative bg-white">
             <div className=" w-full px-5 py-5 mt-3 flex flex-row">

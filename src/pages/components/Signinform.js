@@ -90,12 +90,12 @@ const Signinform = () => {
 
 
     return(
-        <div className="relative top-24 lg:top-20 w-full">  
+        <div className="relative top-16 lg:top-20 w-full">  
         
             <div className="w-fit mx-auto my-6 text-center">
-                <p className="text-5xl font-semibold text-slate-700 py-6">Welcome to <span className="text-purple-600">Waxtan</span></p>
-                <p className="mt-12 lg:mt-1 lg:text-sm text-slate-600 ">Customer service made simple for small businesses.</p>
-                <p className="lg:mt-1 lg:text-sm text-slate-600"><span className="text-pink-400 lg:text-pink-600">Real-time</span> support. Real <span className="text-purple-600 lg:text-purple-600">human</span> connection.</p>
+                <p className="text-5xl mx-2 font-semibold text-slate-700 py-6">Welcome to <span className="text-purple-600">Waxtan</span></p>
+                <p className="mt-12 lg:mt-1 text-sm text-slate-600 ">Customer service made simple for small businesses.</p>
+                <p className="lg:mt-1 text-sm text-slate-600"><span className="text-pink-400 lg:text-pink-600">Real-time</span> support. Real <span className="text-purple-600 lg:text-purple-600">human</span> connection.</p>
             </div>
 
             <div className="rounded-3xl lg:rounded-2xl mx-auto p-3 w-4/6 lg:w-1/6 shadow-lg bg-slate-50/5 lg:bg-slate-50 mt-12 lg:mt-28 mb-6 ">
@@ -114,7 +114,7 @@ const Signinform = () => {
             </div>
 
             <div className="w-fit mx-auto my-6 text-center">
-                <p className="mt-2 text-slate-500 lg:text-slate-50 text-sm">Thank you for trusting us to help you grow!</p>
+                <p className="mt-2 text-slate-500 lg:text-slate-50 text-xs">Thank you for trusting us to help you grow!</p>
             </div>
         </div>
     );

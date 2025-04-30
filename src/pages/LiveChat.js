@@ -182,7 +182,7 @@ const LiveChat = () => {
                  ))}
 
                 {/* Dummy div to scroll to */}
-                <div ref={messagesEndRef} className="h-1/6" />
+                <div ref={messagesEndRef} className="h-28" />
 
             </div>
 
