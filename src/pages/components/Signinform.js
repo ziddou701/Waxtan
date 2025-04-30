@@ -17,11 +17,9 @@ const Signinform = () => {
         e.preventDefault();
         setcanSignIn(!canSignIn);
     };
-
     
     // Set required cookies and usr data
     const SignInWithGoogle = async () => {
-
         try
         {
             person = await signInWithPopup(auth, googleProvider);
@@ -73,7 +71,6 @@ const Signinform = () => {
         {
             console.error(err);
         }
-
     };
 
     // Keep user logged-in

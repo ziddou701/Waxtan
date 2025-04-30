@@ -32,10 +32,10 @@ const Chat = () => {
 
     useEffect(() => {
         const loadChatUsers = async () => {
-            const chatRooms = await fetchChatRoomsBySender(senderEmail);
-            const receivers = getReceiverEmails(chatRooms, senderEmail);
-            await fetchReceiverUsers(receivers);
-            return receivers;
+          const chatRooms = await fetchChatRoomsBySender(senderEmail);
+          const receivers = getReceiverEmails(chatRooms, senderEmail);
+          await fetchReceiverUsers(receivers);
+          return receivers;
         };
 
         loadChatUsers();
@@ -44,10 +44,10 @@ const Chat = () => {
 
     useEffect(() => {
         const fetchAndExtractLastMessages = async () => {
-            const chatRooms = await fetchChatRoomsBySender(senderEmail);
-            const lastMessages = getLastMessages(chatRooms);
-            console.log("Last messages:", lastMessages);
-            setLastMessages(lastMessages);
+          const chatRooms = await fetchChatRoomsBySender(senderEmail);
+          const lastMessages = getLastMessages(chatRooms);
+          console.log("Last messages:", lastMessages);
+          setLastMessages(lastMessages);
           };
 
           fetchAndExtractLastMessages();
@@ -56,10 +56,6 @@ const Chat = () => {
     useEffect(() => {
         
     },[]);
-
-
-
-
 
     const fetchChatRoomsBySender = async (senderEmail) => {
         try {
@@ -85,17 +81,17 @@ const Chat = () => {
 
     const getReceiverEmails = (chatRooms, senderEmail) => {
     const receiverEmails = chatRooms.map(room => {
-        return room.participants.find(email => email !== senderEmail);
+      return room.participants.find(email => email !== senderEmail);
     }).filter(Boolean); // removes undefined/null values
     
     return receiverEmails;
     };
 
     const fetchReceiverEmails = async () => {
-        const chatRooms = await fetchChatRoomsBySender(senderEmail);
-        const receivers = getReceiverEmails(chatRooms, senderEmail);
-        console.log("Receiver emails:", receivers);
-        setReceiverEmail(receivers);
+      const chatRooms = await fetchChatRoomsBySender(senderEmail);
+      const receivers = getReceiverEmails(chatRooms, senderEmail);
+      console.log("Receiver emails:", receivers);
+      setReceiverEmail(receivers);
     };
     
     const fetchReceiverUsers = async (receiverEmails) => {

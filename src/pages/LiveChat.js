@@ -32,10 +32,7 @@ const LiveChat = () => {
 
     } , [] );
 
-
-
 // Fetch user information and creating chatRoom
-    
     const fetchReceiverDetails = async () => {
         try
         {
@@ -60,7 +57,6 @@ const LiveChat = () => {
     }
 
     const senderEmail = cookies.get('sender-email');
-
     const CreateNewChatRoom = async (senderEmail, receiverEmail) => {
         try {
           const chatRoomsRef = collection(firestore, "ChatRooms");
@@ -142,12 +138,6 @@ const LiveChat = () => {
       }, [messages]);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
 
     return(
         <div>

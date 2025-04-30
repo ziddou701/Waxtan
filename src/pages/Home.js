@@ -4,9 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {addDoc , setDoc , getDoc , getDocs , doc , collection} from "@firebase/firestore";
 import { firestore } from "../Firebase";
-import LiveChat from "./LiveChat";
-
-
 
 const Home = () => {
 
@@ -16,10 +13,6 @@ const Home = () => {
     const [refresh , setRefresh] = useState(false);
     const [users , setUsers] = useState([]);
     const senderEmail = cookies.get('sender-email');
-
-
-
-
 
 // Verifying User login state
 
@@ -43,8 +36,6 @@ const Home = () => {
         }
     };
 
-
-
 // Create and Handle New Chat
     const [creatNewChat , setCreatNewChat] = useState(false);
 
@@ -54,10 +45,8 @@ const Home = () => {
     }
 
     const handleCreateNewChat = (receiverEmail) =>{
-
         cookies.set('receiver-email' , receiverEmail);
         Navigate('/Live');
-
     };
 
     // Fetching user list
@@ -67,7 +56,6 @@ const Home = () => {
             const docSnap = await getDocs(collection(firestore, 'Users'));
             const user = docSnap.docs.map((doc) => {
                 const data = doc.data();
-              
                 return {
                   name: data.displayName,
                   email: data.email,
@@ -78,7 +66,6 @@ const Home = () => {
                 }});
 
             console.log(user);
-
             setUsers(user);
         }
         catch

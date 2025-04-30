@@ -3,15 +3,10 @@ import Cookies from "universal-cookie";
 import { firestore } from "../../Firebase";
 import { doc, query, where, collection, getDocs, updateDoc, arrayUnion } from "@firebase/firestore";
 
-
-
-
 const SendMessage = () => {
 
     const [messageOut , setMessageOut] = useState('');
     const cookies = new Cookies();
-
-
     const senderEmail = cookies.get("sender-email");
     const receiverEmail = cookies.get('receiver-email');
 
@@ -49,7 +44,6 @@ const SendMessage = () => {
         setMessageOut('');
       };
 
-
     const handleMessageOut = (e) =>{
         e.preventDefault();
         if (messageOut ==='')
@@ -74,20 +68,7 @@ const SendMessage = () => {
             sendMessage(message);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     return(
         <div className="fixed bottom-0 left-0 w-screen h-24 px-4 bg-slate-100">
 
